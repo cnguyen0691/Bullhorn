@@ -5,42 +5,48 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <!--Navigation-->
 <nav th:replace="base :: navlinks"></nav>
 <!--Content-->
-<div class="container-fluid">
-
+<div class="container">
     <div>
-        <h2 style="text-align: center; font-family: cursive; color:lightskyblue" >All Messages</h2>
+        <h2 >All Messages</h2>
     </div>
-    <div>
-        <table>
+    <table class="table">
+
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Message</th>
+                <th scope="col">PostedDate</th>
+                <th scope="col">PostedBy</th>
+                <th scope="col">Image</th>
+            </tr>
+            </thead>
             <tbody>
-            <tr class="row">
-                <td th:each="message : ${messages}" class="card col-sm-6" style="width: 30rem;">
-                    <div th:if="${message.image} != null">
-                        <img width="200px" height="200px" th:src="${message.image}" class="card-img-top"/>
-                    </div>
-                    <div class="card-body">
-                        <h4 th:text="${message.title}" class="card-title"></h4>
-                        <p th:text="${message.content}" class="card-text"></p>
-                        <label>Posted on: </label><span th:text="${message.postedDate}"></span>
-                        <label> By: </label><span th:text="${message.postedBy}"></span>
-                    </div>
-                    <div class="card-footer">
+            <tr th:each="message: ${messages}" >
+               <td th:text="${message.title}"></td>
+                <td th:text="${message.content}"></td>
+                <td th:text="${message.postedDate}"></td>
+                <td th:text="${message.postedBy}"></td>
+                <td ><img th:src="@{message.image}"/></td>
+                <td>
+                    <div >
                         <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Update</a>
                         <a th:href="@{/detail/{id}(id=${message.id})}" class="btn btn-outline-secondary">Details</a>
                         <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-danger">Delete</a>
                     </div>
                 </td>
             </tr>
+
             </tbody>
         </table>
+    <div>
+        <a href="/add" class="btn btn-outline-primary btn-sm"> Add A Message</a>
     </div>
-    <div><a href="/add" class="btn btn-outline-primary btn-sm"> Add A Message</a></div>
 </div>
 <!--Footer-->
 <footer th:replace="base :: footer"></footer>

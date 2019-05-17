@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <!--Navigation-->
@@ -13,33 +13,27 @@
 <!--Content-->
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h2 th:text="${message.title}"></h2>
-        </div>
-    </div><br/>
-    <div class="row">
+
         <div class="col">
-            <h2>Message</h2>
+            <h3 style="text-align: left;font-size: 18px;
+            color: blue;" th:text="${message.title}"></h3>
+        </div>
+        <div class="col">
             <p th:text="${message.content}"></p>
         </div>
-    </div><br/>
-    <div class="row">
-            <h4>Post Date</h4>
-            <span th:text="${message.postedDate}"></span>
-    </div><br/>
-    <div class="row">
-            <h4>Post By</h4>
-            <span th:text="${message.postedBy}"></span>
-    </div><br/>
-    <div class="row">
-        <div class="image" th:if="${message.image} != null">
-            <img width="200px" height="200px" th:src="${message.image}" />
+        <div class="col">
+            <img alt="Image" th:src="${message.image}" width="50px" height="50px"/>
         </div>
+        <div class="col">
+            <p>Post Date: <span th:text="${message.postedDate}"></span><br/>
+            Post By: <span th:text="${message.postedBy}"></span></p>
+        </div>
+        <div class="col">
+            <a th:href="@{/delete/{id}(id=${message.id})}">Delete Message</a>
+    </div>
     </div>
 </div>
-<div>
-    <a th:href="@{/delete/{id}(id=${message.id})}">Delete Message</a>
-</div>
+
 <!--Footer-->
 <footer th:replace="base :: footer"></footer>
 

@@ -5,14 +5,14 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <!--Navigation-->
 <nav th:replace="base :: navlinks"></nav>
 <!--Content-->
-<div class="container-fluid">
-    <h2>Add Message</h2>
+<div class="container">
+    <h2 >Add Message</h2>
     <div class="jumbotron">
         <form action="#" th:action="@{/process}" th:object="${message}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}"/>
@@ -24,14 +24,14 @@
             </div><br/>
             <!--Content-->
             <div class="form-group" id="content">
-                <label for="contentArea">Message</label>
-                <textarea th:field="*{content}" class="form-control" id="contentArea"></textarea>
+                <h4>Message</h4>
+                <textarea rows="3" th:field="*{content}" class="form-control" id="contentArea"></textarea>
                 <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
             </div><br/>
             <!--post date-->
             <div id="postedDate">
                 <h4>Date</h4>
-                <input type="text" th:field="*{postedDate}"/>
+                <input type="number" th:field="*{postedDate}"/>
                 <span th:if="${#fields.hasErrors('postedDate')}" th:error="*{postedDate}"></span>
             </div><br/>
             <!--post by-->
@@ -40,10 +40,13 @@
                 <input type="text" th:field="*{postedBy}"/>
                 <span th:if="${#fields.hasErrors('postedBy')}" th:error="*{postedBy}"></span>
             </div><br/>
-            <div>
-                <input type="file" name="file"/>
-            </div>
-            <br/>
+            <!--image-->
+            <div id="image">
+                <h4>File</h4>
+                <input type="file" th:src="*{image}"/>
+
+            </div><br/>
+
             <input class="btn btn-primary btn-md" type="submit" value="Submit"/>
         </form>
     </div>
