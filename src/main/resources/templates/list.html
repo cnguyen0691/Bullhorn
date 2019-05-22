@@ -23,7 +23,7 @@
                 <th scope="col">Message</th>
                 <th scope="col">PostedDate</th>
                 <th scope="col">PostedBy</th>
-                <th scope="col">Image</th>
+<!--                <th scope="col">Image</th>-->
             </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                 <td th:text="${message.content}"></td>
                 <td th:text="${message.postedDate}"></td>
                 <td th:text="${message.postedBy}"></td>
-                <td ><img th:src="@{message.image}"/></td>
+<!--                <td ><img th:src="@{message.image}"/></td>-->
                 <td>
                     <div >
                         <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Update</a>
