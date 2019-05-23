@@ -1,16 +1,18 @@
 package com.example.bullhorn;
 
+
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.Map;
 
 
 @Controller
@@ -18,40 +20,58 @@ public class HomeController {
     @Autowired
     MessageRepository messageRepository;
 
+    @Autowired
+    CloudinaryConfig cloudinaryConfig;
+
     @RequestMapping("/")
-    public String listmessage(Model model){
+    public String listMessage(Model model){
         model.addAttribute("messages", messageRepository.findAll());
         return "list";
     }
-//    @RequestMapping(value = "{image}")
-//    @ResponseBody
-//    public byte[] getImage(@PathVariable(value = "image") String imageName) throws IOException {
-//
-//        File serverFile = new File("/home/user/uploads/" + imageName + ".jpg");
-//
-//        return Files.readAllBytes(serverFile.toPath());
-//    }
 
     @GetMapping("/add")
-    public String addmessage(Model model){
+    public String addMessage(Model model){
         model.addAttribute("message", new Message());
-            return "message";
+            return "addMessage";
 
     }
     @PostMapping("/process")
-    public String processmessage (@Valid Message message, BindingResult result){
-        if(result.hasErrors()){
-            return ("message");
+    public String processMessage (@Valid @ModelAttribute("message") Message message,
+                                  BindingResult result,
+                                  @RequestParam("file") MultipartFile file) {
+        System.out.println("object =" + message);
+        if (result.hasErrors()) {
+            for (ObjectError e : result.getAllErrors()) {
+                System.out.println(e);
+            }
+            return "addMessage";
         }
+        //if there is a picture path and file is empty then save message
+        if (message.getImage() != null && file.isEmpty()) {
+            messageRepository.save(message);
+            return "redirect:/";
+        }
+        if( file.isEmpty()){
+            return "addMessage";
+        }
+        Map uploadResult;
+        try {
+            uploadResult = cloudinaryConfig.upload(
+                    file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "redirect:/addMessage";
+        }
+        String url = uploadResult.get("url").toString();
+        message.setImage(url);
         messageRepository.save(message);
-        return ("redirect:/");
-
+        return "redirect:/";
     }
 
     @RequestMapping("/update/{id}")
     public String updateMessage(@PathVariable("id") long id, Model model) {
         model.addAttribute("message", messageRepository.findById(id).get());
-        return "message";
+        return "addMessage";
     }
 
     @RequestMapping("/detail/{id}")

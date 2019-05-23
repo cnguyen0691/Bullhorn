@@ -20,15 +20,16 @@
         </div>
         <div class="col">
             <p th:text="${message.content}"></p>
-<!--        </div>-->
-<!--        <div class="col">-->
-<!--            <img alt="Image" th:src="${message.image}" width="50px" height="50px"/>-->
-<!--        </div>-->
+        </div>
+        <div class="col">
+            <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/>
+        </div>
         <div class="col">
             <p>Post Date: <span th:text="${message.postedDate}"></span><br/>
             Post By: <span th:text="${message.postedBy}"></span></p>
         </div>
         <div class="col">
+            <a th:href="@{/update/{id}(id=${message.id})}">Edit</a>
             <a th:href="@{/delete/{id}(id=${message.id})}">Delete Message</a>
     </div>
     </div>
