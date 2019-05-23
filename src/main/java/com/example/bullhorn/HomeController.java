@@ -86,4 +86,10 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @RequestMapping("/about")
+    public String getAbout(Model model){
+        model.addAttribute("messages", messageRepository.findAll());
+        return "about";
+    }
+
 }
